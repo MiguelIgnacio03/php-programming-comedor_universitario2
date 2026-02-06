@@ -2,14 +2,14 @@
 
 :root {
     --primary-color: #2c3e50;
-    --secondary-color: #34495e;
-    --accent-color: #e67e22;
-    --text-color: #333;
-    --bg-color: #f4f7f6;
+    --secondary-color: #3498db;
+    --accent-color: #f39c12;
+    --bg-color: #f4f6f9;
     --white: #ffffff;
     --error-color: #e74c3c;
-    --success-color: #2ecc71;
-    --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --success-color: #27ae60;
+    --warning-color: #f1c40f;
+    --danger-color: #e74c3c;
 }
 
 * {
@@ -19,10 +19,44 @@
 }
 
 body {
-    font-family: var(--font-main);
-    background-color: var(--bg-color);
-    color: var(--text-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg-color);
+    color: #333;
     line-height: 1.6;
+}
+
+/* Badge Styles */
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.badge-disponible {
+    background: #d4edda;
+    color: #155724;
+}
+
+.badge-consumido {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.badge-almuerzo {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.badge-desayuno {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.badge-cena {
+    background: #e2e3e5;
+    color: #383d41;
 }
 
 header {
@@ -30,7 +64,7 @@ header {
     color: var(--white);
     padding: 1rem 0;
     text-align: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .container {
@@ -39,7 +73,9 @@ header {
     padding: 0 1rem;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
     margin-bottom: 1rem;
 }
 
@@ -58,7 +94,7 @@ footer {
     background: var(--white);
     padding: 2rem;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     margin-top: 1rem;
 }
 
@@ -77,4 +113,65 @@ footer {
 
 .btn:hover {
     background: #d35400;
+}
+
+/* Button styles - Specific colors */
+.btn-warning,
+a.btn-warning,
+button.btn-warning {
+    background-color: #f1c40f !important;
+    color: #000 !important;
+    border: 1px solid #d4ac0d !important;
+}
+
+.btn-danger,
+a.btn-danger,
+button.btn-danger {
+    background-color: #e74c3c !important;
+    color: #fff !important;
+    border: 1px solid #c0392b !important;
+}
+
+.btn-warning:hover {
+    background-color: #d4ac0d !important;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b !important;
+}
+
+.btn-primary {
+    background: var(--secondary-color) !important;
+    color: var(--white) !important;
+}
+
+.btn-primary:hover {
+    background: #2980b9 !important;
+}
+
+.btn-success {
+    background: var(--success-color) !important;
+    color: var(--white) !important;
+}
+
+/* Actions cell alignment (Vertical Buttons) */
+.actions-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    min-width: 120px;
+}
+
+.actions-cell form,
+.actions-cell a {
+    width: 100%;
+    margin: 0 !important;
+}
+
+.actions-cell .btn {
+    width: 100%;
+    text-align: center;
+    display: block;
 }

@@ -11,9 +11,20 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Autoload Core Libraries
+// Autoload Core Libraries, Models and Controllers
 spl_autoload_register(function($className) {
-    if (file_exists(APPROOT . '/app/core/' . $className . '.php')) {
-        require_once APPROOT . '/app/core/' . $className . '.php';
+    // Directories to search
+    $directories = [
+        APPROOT . '/app/core/',
+        APPROOT . '/app/models/',
+        APPROOT . '/app/controllers/'
+    ];
+
+    foreach ($directories as $directory) {
+        if (file_exists($directory . $className . '.php')) {
+            require_once $directory . $className . '.php';
+            return;
+        }
     }
 });
 
@@ -21,8 +32,41 @@ spl_autoload_register(function($className) {
 $router = new Router();
 
 // Add Routes
+$router->add('api/dashboard', 'Api', 'dashboard');
+$router->add('api/productos', 'Api', 'productos');
+$router->add('api/lotes', 'Api', 'lotes');
+$router->add('api/consumir', 'Api', 'consumir');
+// $router->add('api', 'Api', 'index');
+
+$router->add('dashboard', 'Dashboard', 'index');
+$router->add('categorias', 'Categorias', 'index');
+$router->add('categorias/inactivos', 'Categorias', 'inactivos');
+$router->add('categorias/crear', 'Categorias', 'crear');
+$router->add('categorias/editar', 'Categorias', 'editar');
+$router->add('categorias/deshabilitar', 'Categorias', 'deshabilitar');
+$router->add('categorias/activar', 'Categorias', 'activar');
+$router->add('productos', 'Productos', 'index');
+$router->add('productos/crear', 'Productos', 'crear');
+$router->add('productos/editar', 'Productos', 'editar');
+$router->add('productos/deshabilitar', 'Productos', 'deshabilitar');
+$router->add('productos/inactivos', 'Productos', 'inactivos');
+$router->add('productos/activar', 'Productos', 'activar');
+$router->add('lotes', 'Lotes', 'index');
+$router->add('lotes/crear', 'Lotes', 'crear');
+$router->add('lotes/editar', 'Lotes', 'editar');
+$router->add('lotes/deshabilitar', 'Lotes', 'deshabilitar');
+$router->add('lotes/inactivos', 'Lotes', 'inactivos');
+$router->add('lotes/activar', 'Lotes', 'activar');
+$router->add('menus', 'Menus', 'index');
+$router->add('menus/crear', 'Menus', 'crear');
+$router->add('menus/consumir', 'Menus', 'consumir');
+$router->add('reportes', 'Reportes', 'index');
+$router->add('reportes/inventario', 'Reportes', 'inventario');
+$router->add('reportes/consumo', 'Reportes', 'consumo');
 $router->add('home', 'Home', 'index');
-$router->add('', 'Home', 'index');
+$router->add('login', 'Login', 'index');
+$router->add('logout', 'Login', 'logout');
+$router->add('', 'Login', 'index'); // Default to login
 
 // Dispatch Router
 $router->dispatch($_SERVER['REQUEST_URI']);

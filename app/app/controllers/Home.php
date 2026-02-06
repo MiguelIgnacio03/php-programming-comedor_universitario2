@@ -2,7 +2,7 @@
 /**
  * Home Controller
  */
-class Home extends Controller {
+class Home {
     public function index() {
         $data = [
             'title' => 'Bienvenido al Comedor Universitario',

@@ -10,10 +10,19 @@ define('DB_PASS', '');
 define('DB_NAME', 'comedor_universitario');
 
 // App Root
-define('APPROOT', dirname(dirname(__FILE__)));
+if (!defined('APPROOT')) {
+    define('APPROOT', dirname(dirname(__FILE__)));
+}
 
-// URL Root
-define('URLROOT', 'http://localhost/Comedor_Universitario');
+// URL Root (Dynamic detection)
+if (!isset($_SERVER['HTTP_HOST'])) {
+    define('URLROOT', 'http://localhost/Comedor_Universitario');
+} else {
+    $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
+    $host = $_SERVER['HTTP_HOST'];
+    $projectFolder = str_replace('/public', '', dirname($_SERVER['PHP_SELF']));
+    define('URLROOT', "$protocol://$host" . ($projectFolder === '/' ? '' : $projectFolder));
+}
 
 // Site Name
 define('SITENAME', 'Comedor Universitario');

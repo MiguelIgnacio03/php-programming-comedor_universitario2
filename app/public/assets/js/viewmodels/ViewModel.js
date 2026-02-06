@@ -1,6 +1,5 @@
 /**
  * Base ViewModel Class
- * Implements Observer pattern for reactive UI updates
  */
 class ViewModel {
     constructor() {
@@ -10,6 +9,7 @@ class ViewModel {
 
     /**
      * Update state and notify observers
+     * @param {Object} newState 
      */
     setState(newState) {
         this.state = { ...this.state, ...newState };
@@ -17,10 +17,11 @@ class ViewModel {
     }
 
     /**
-     * Subscribe to state changes
+     * Register an observer function
+     * @param {Function} observer 
      */
-    subscribe(callback) {
-        this.observers.push(callback);
+    subscribe(observer) {
+        this.observers.push(observer);
     }
 
     /**
@@ -28,12 +29,5 @@ class ViewModel {
      */
     notifyObservers() {
         this.observers.forEach(observer => observer(this.state));
-    }
-
-    /**
-     * Get current state
-     */
-    getState() {
-        return this.state;
     }
 }

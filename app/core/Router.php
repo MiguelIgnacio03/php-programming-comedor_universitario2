@@ -29,44 +29,86 @@ class Router {
         $uri = trim(parse_url($uri, PHP_URL_PATH), '/');
         
         // Remove project folder from URI if present
-        $projectFolder = 'Comedor_Universitario';
-        if (strpos($uri, $projectFolder) === 0) {
+        $urlParts = parse_url(URLROOT);
+        $projectFolder = isset($urlParts['path']) ? trim($urlParts['path'], '/') : '';
+        if ($projectFolder && strpos($uri, $projectFolder) === 0) {
             $uri = trim(substr($uri, strlen($projectFolder)), '/');
         }
 
-        // Default to home if empty
-        if ($uri === '') {
-            $uri = 'home';
+        // Remove 'public' from URI if present
+        if (strpos($uri, 'public') === 0) {
+            $uri = trim(substr($uri, strlen('public')), '/');
         }
 
+        // Check if route exists (Exact match)
         if (array_key_exists($uri, $this->routes)) {
             $route = $this->routes[$uri];
-            $controllerName = $route['controller'];
-            $methodName = $route['method'];
-
-            // Require the controller file
-            $controllerFile = APPROOT . '/app/controllers/' . $controllerName . '.php';
-            if (file_exists($controllerFile)) {
-                require_once $controllerFile;
+            $this->executeRoute($route);
+        } else {
+            // Check for dynamic routes (e.g., productos/editar/5)
+            $found = false;
+            foreach ($this->routes as $routeKey => $routeVal) {
+                // If route ends with wildcard or param placeholder? No, let's just do prefix matching for simplicity in this legacy-style router
+                // Actually, let's strip the last segment if it's numeric
+                $parts = explode('/', $uri);
+                $lastPart = end($parts);
                 
-                // Instantiate and call the method
-                if (class_exists($controllerName)) {
-                    $controller = new $controllerName();
-                    if (method_exists($controller, $methodName)) {
-                        call_user_func([$controller, $methodName]);
-                    } else {
-                        die("Method $methodName not found in controller $controllerName");
+                if (is_numeric($lastPart)) {
+                    array_pop($parts);
+                    $baseUri = implode('/', $parts);
+                    
+                    if (array_key_exists($baseUri, $this->routes)) {
+                        $route = $this->routes[$baseUri];
+                        $route['params'] = [$lastPart];
+                        $this->executeRoute($route);
+                        $found = true;
+                        break;
                     }
+                }
+            }
+
+            if (!$found) {
+                // 404 Not Found
+                http_response_code(404);
+                echo "<h1>404 - Not Found</h1>";
+                echo "<p>Requested URI: <strong>$uri</strong></p>";
+                echo "<p>Available routes:</p><ul>";
+                foreach (array_keys($this->routes) as $route) {
+                    echo "<li>$route</li>";
+                }
+                echo "</ul>";
+            }
+        }
+    }
+
+    private function executeRoute($route) {
+        $controllerName = $route['controller'];
+        $methodName = $route['method'];
+        $params = $route['params'] ?? [];
+
+        // Require the controller file
+        $controllerFile = APPROOT . '/app/controllers/' . $controllerName . '.php';
+        if (file_exists($controllerFile)) {
+            require_once $controllerFile;
+            
+            // Check if middleware is required
+            if ($route['middleware']) {
+                AuthMiddleware::handle($route['middleware']);
+            }
+
+            // Instantiate and call the method
+            if (class_exists($controllerName)) {
+                $controller = new $controllerName();
+                if (method_exists($controller, $methodName)) {
+                    call_user_func_array([$controller, $methodName], $params);
                 } else {
-                    die("Controller class $controllerName not found");
+                    die("Method $methodName not found in controller $controllerName");
                 }
             } else {
-                die("Controller file not found: $controllerFile");
+                die("Controller class $controllerName not found");
             }
         } else {
-            // 404 Not Found
-            http_response_code(404);
-            echo "<h1>404 - Not Found</h1>";
+            die("Controller file not found: $controllerFile");
         }
     }
 }

@@ -14,9 +14,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Subscribe to state changes to update UI
     viewModel.subscribe((state) => {
         // Update Stats Cards
-        updateElementText('stat-total-productos', state.stats.total_productos);
-        updateElementText('stat-stock-critico', state.stats.stock_critico);
-        updateElementText('stat-lotes-vencen', state.stats.lotes_vencen);
+        if (state.stats) {
+            updateElementText('stat-total-productos', state.stats.total_productos);
+            updateElementText('stat-stock-critico', state.stats.stock_critico);
+            updateElementText('stat-lotes-vencen', state.stats.lotes_vencen);
+            updateElementText('stat-total-categorias', state.stats.total_categorias);
+            updateElementText('stat-total-proveedores', state.stats.total_proveedores);
+        }
 
         // Update Stock Alerts Table
         if (state.alerts.stock.length > 0) {

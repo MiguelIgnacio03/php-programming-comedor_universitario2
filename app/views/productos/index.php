@@ -20,8 +20,8 @@
                     <button id="refresh-inventario-btn" class="btn btn-sm" style="background:var(--secondary-color)">🔄</button>
                 </div>
                 <div style="display:flex; gap: 10px;">
-                    <a href="<?php echo URLROOT; ?>/productos/inactivos" class="btn btn-secondary btn-sm" style="display:flex; align-items:center;">🚫 Deshabilitados</a>
-                    <a href="<?php echo URLROOT; ?>/productos/crear" class="btn">+ Nuevo Producto</a>
+                    <a href="<?php echo URLROOT; ?>/productos/inactivos" class="btn btn-danger btn-sm" style="display:flex; align-items:center; gap: 0.5rem;">🚫 Ver Deshabilitados</a>
+                    <a href="<?php echo URLROOT; ?>/productos/crear" class="btn btn-primary">+ Nuevo Producto</a>
                 </div>
             </div>
 

@@ -4,7 +4,8 @@ Sistema fullstack de gestión de inventario para comedores universitarios, desar
 
 ## 🎯 Características Principales
 
-- **Gestión de Productos**: CRUD completo con categorías y proveedores
+- **Gestión de Productos**: CRUD completo con categorías y vinculación a proveedores
+- **Gestión de Proveedores**: Módulo dedicado para administración de empresas suministradoras (Admin Only)
 - **Control de Lotes**: Sistema FIFO (First In, First Out) para productos perecederos
 - **Planificación de Menús**: Creación de menús semanales con consumo automático de inventario
 - **Alertas Inteligentes**: Notificaciones de stock crítico y productos próximos a vencer
@@ -76,7 +77,7 @@ Comedor_Universitario/
 ### Administrador
 - Acceso completo a todos los módulos
 - Generación de reportes PDF
-- Gestión de usuarios
+- Gestión de usuarios y proveedores
 
 ### Cocina
 - Visualización de menús
@@ -110,6 +111,11 @@ Comedor_Universitario/
 - Consumo automático con FIFO al ejecutar menú
 - Validación de disponibilidad de stock
 
+### Proveedores (Solo Administradores)
+- Administración centralizada de proveedores vinculados al inventario
+- Información de contacto: Teléfono, Email, Dirección y Persona de contacto
+- Sistema de deshabilitación y reactivación (Soft Delete)
+
 ### Reportes (Solo Administradores)
 - Reporte de Inventario: Estado completo con alertas
 - Reporte de Consumo: Movimientos en rango de fechas
@@ -137,7 +143,8 @@ El sistema implementa consumo inteligente de lotes:
 ## � Actualizaciones Recientes (Febrero 2026)
 
 ### 📦 Gestión Avanzada de Stock
-- **Sistema de Papelera (Soft Delete)**: Implementado en Productos, Lotes y Categorías. Los elementos ahora pueden deshabilitarse y reactivarse desde una lista de inactivos, preservando la trazabilidad.
+- **Sistema de Papelera (Soft Delete)**: Implementado en Productos, Lotes, Categorías y **Proveedores**. Los elementos ahora pueden deshabilitarse y reactivarse desde una lista de inactivos, preservando la trazabilidad.
+- **Módulo de Proveedores**: Implementación de CRUD completo para administración de proveedores, con acceso restringido a administradores y vistas duales (Activos/Inactivos).
 - **Categorías Dinámicas**: CRUD completo de categorías con soporte para productos perecederos y estados activos/inactivos.
 
 ### 🎨 Mejoras de UI/UX
@@ -165,7 +172,7 @@ El sistema implementa consumo inteligente de lotes:
 
 ## 📄 Licencia
 
-Proyecto educativo - Universidad [Nombre]
+Proyecto educativo - Universidad [U.N.E.F.A]
 
 ---
 

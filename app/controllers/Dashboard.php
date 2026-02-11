@@ -16,6 +16,12 @@ class Dashboard extends Controller {
         $stockCritico = $this->productoModel->checkStockCritico();
         $lotesProximosVencer = $this->loteModel->getLotesProximosVencer();
         $productos = $this->productoModel->getAllWithDetails();
+        
+        $categoriaModel = $this->model('CategoriaModel');
+        $proveedorModel = $this->model('ProveedorModel');
+        
+        $categorias = $categoriaModel->getAll();
+        $proveedores = $proveedorModel->getAll();
 
         // Calcular estadísticas
         $totalProductos = count($productos);
@@ -27,6 +33,8 @@ class Dashboard extends Controller {
             'totalProductos' => $totalProductos,
             'productosStockCritico' => $productosStockCritico,
             'lotesVencenProximo' => $lotesVencenProximo,
+            'totalCategorias' => count($categorias),
+            'totalProveedores' => count($proveedores),
             'stockCritico' => $stockCritico,
             'lotesProximosVencer' => $lotesProximosVencer
         ];

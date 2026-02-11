@@ -33,12 +33,17 @@ class Api extends Controller {
             $stockCritico = $this->productoModel->checkStockCritico();
             $lotesProximosVencer = $this->loteModel->getLotesProximosVencer();
             $productos = $this->productoModel->getAllWithDetails();
+            $categorias = $this->categoriaModel->getAll();
+            $proveedorModel = $this->model('ProveedorModel');
+            $proveedores = $proveedorModel->getAll();
 
             echo json_encode([
                 'stats' => [
                     'total_productos' => count($productos),
                     'stock_critico' => count($stockCritico),
-                    'lotes_vencen' => count($lotesProximosVencer)
+                    'lotes_vencen' => count($lotesProximosVencer),
+                    'total_categorias' => count($categorias),
+                    'total_proveedores' => count($proveedores)
                 ],
                 'stock_critico_list' => $stockCritico,
                 'lotes_vencen_list' => $lotesProximosVencer

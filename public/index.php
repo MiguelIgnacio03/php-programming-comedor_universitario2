@@ -59,7 +59,16 @@ $router->add('lotes/inactivos', 'Lotes', 'inactivos');
 $router->add('lotes/activar', 'Lotes', 'activar');
 $router->add('menus', 'Menus', 'index');
 $router->add('menus/crear', 'Menus', 'crear');
+$router->add('menus/editar', 'Menus', 'editar');
 $router->add('menus/consumir', 'Menus', 'consumir');
+
+$router->add('proveedores', 'Proveedores', 'index');
+$router->add('proveedores/crear', 'Proveedores', 'crear');
+$router->add('proveedores/editar', 'Proveedores', 'editar');
+$router->add('proveedores/eliminar', 'Proveedores', 'eliminar');
+$router->add('proveedores/inactivos', 'Proveedores', 'inactivos');
+$router->add('proveedores/activar', 'Proveedores', 'activar');
+
 $router->add('reportes', 'Reportes', 'index');
 $router->add('reportes/inventario', 'Reportes', 'inventario');
 $router->add('reportes/consumo', 'Reportes', 'consumo');

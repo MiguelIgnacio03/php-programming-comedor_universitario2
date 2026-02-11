@@ -33,6 +33,16 @@
                     <h3>Lotes por Vencer</h3>
                     <p class="stat-number" id="stat-lotes-vencen"><?php echo $data['lotesVencenProximo']; ?></p>
                 </div>
+                <?php if (isset($_SESSION['usuario_rol']) && $_SESSION['usuario_rol'] === 'administrador'): ?>
+                <div class="card" style="border-left: 4px solid var(--secondary-color);">
+                    <h3>Categorías</h3>
+                    <p class="stat-number" id="stat-total-categorias"><?php echo $data['totalCategorias']; ?></p>
+                </div>
+                <div class="card" style="border-left: 4px solid var(--success-color);">
+                    <h3>Proveedores</h3>
+                    <p class="stat-number" id="stat-total-proveedores"><?php echo $data['totalProveedores']; ?></p>
+                </div>
+                <?php endif; ?>
             </div>
 
             <!-- Alertas de Stock Crítico -->
@@ -96,8 +106,8 @@
     </div>
 
     <!-- MVVM Scripts -->
-    <script src="<?php echo URLROOT; ?>/public/assets/js/viewmodels/ViewModel.js"></script>
-    <script src="<?php echo URLROOT; ?>/public/assets/js/viewmodels/DashboardViewModel.js"></script>
-    <script src="<?php echo URLROOT; ?>/public/assets/js/dashboard-binder.js"></script>
+    <script src="<?php echo URLROOT; ?>/public/assets/js/viewmodels/ViewModel.js?v=<?php echo time(); ?>"></script>
+    <script src="<?php echo URLROOT; ?>/public/assets/js/viewmodels/DashboardViewModel.js?v=<?php echo time(); ?>"></script>
+    <script src="<?php echo URLROOT; ?>/public/assets/js/dashboard-binder.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>

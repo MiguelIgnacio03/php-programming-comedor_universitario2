@@ -42,6 +42,14 @@ class Productos extends Controller {
                 'proveedor_id' => $_POST['proveedor_id']
             ];
 
+            if (!empty($data['nombre']) && !preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/', $data['nombre'])) {
+                $data['error'] = 'El nombre del producto solo puede contener letras y espacios';
+                $data['categorias'] = $categorias;
+                $data['proveedores'] = $proveedores;
+                $this->view('productos/crear', $data);
+                return;
+            }
+
             if ($this->productoModel->create($data)) {
                 header('Location: ' . URLROOT . '/productos');
                 exit;
@@ -72,6 +80,15 @@ class Productos extends Controller {
                 'precio_unitario' => $_POST['precio_unitario'],
                 'proveedor_id' => $_POST['proveedor_id']
             ];
+
+            if (!empty($data['nombre']) && !preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/', $data['nombre'])) {
+                $data['error'] = 'El nombre del producto solo puede contener letras y espacios';
+                $data['producto'] = $producto;
+                $data['categorias'] = $categorias;
+                $data['proveedores'] = $proveedores;
+                $this->view('productos/editar', $data);
+                return;
+            }
 
             if ($this->productoModel->update($data)) {
                 header('Location: ' . URLROOT . '/productos');

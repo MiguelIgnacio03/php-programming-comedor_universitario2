@@ -56,9 +56,10 @@
                             <td><span class="badge"><?php echo ucfirst($menu['tipo']); ?></span></td>
                             <td><?php echo $menu['fecha']; ?></td>
                             <td style="font-size: 0.9em;"><?php echo htmlspecialchars($menu['ingredientes'] ?? 'Sin ingredientes'); ?></td>
-                            <td>
-                                <form method="POST" action="<?php echo URLROOT; ?>/menus/consumir/<?php echo $menu['id']; ?>" style="display:inline;">
-                                    <button type="submit" class="btn btn-sm" style="background: var(--success-color);" 
+                            <td style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                <a href="<?php echo URLROOT; ?>/menus/editar/<?php echo $menu['id']; ?>" class="btn btn-warning btn-sm" title="Editar Menú" style="text-align: center;">✏️ Editar</a>
+                                <form method="POST" action="<?php echo URLROOT; ?>/menus/consumir/<?php echo $menu['id']; ?>">
+                                    <button type="submit" class="btn btn-sm" style="background: var(--success-color); width: 100%;" 
                                             onclick="return confirm('¿Confirmar consumo de este menú? Se descontará del inventario usando FIFO.')">
                                         🍽️ Consumir
                                     </button>

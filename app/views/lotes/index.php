@@ -20,8 +20,8 @@
                     <button id="refresh-lotes-btn" class="btn btn-sm" style="background:var(--secondary-color)">🔄</button>
                 </div>
                 <div style="display:flex; gap: 10px;">
-                    <a href="<?php echo URLROOT; ?>/lotes/inactivos" class="btn btn-secondary btn-sm" style="display:flex; align-items:center;">🚫 Deshabilitados</a>
-                    <a href="<?php echo URLROOT; ?>/lotes/crear" class="btn">+ Registrar Lote</a>
+                    <a href="<?php echo URLROOT; ?>/lotes/inactivos" class="btn btn-danger btn-sm" style="display:flex; align-items:center; gap: 0.5rem;">🚫 Ver Deshabilitados</a>
+                    <a href="<?php echo URLROOT; ?>/lotes/crear" class="btn btn-primary">+ Registrar Lote</a>
                 </div>
             </div>
 

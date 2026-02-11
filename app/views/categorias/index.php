@@ -18,9 +18,9 @@
                 <div style="display:flex; align-items:center; gap: 1rem;">
                     <h1>🏷️ Gestión de Categorías</h1>
                 </div>
-                <div class="header-actions">
-                    <a href="<?php echo URLROOT; ?>/categorias/inactivos" class="btn btn-secondary">🚫 Deshabilitados</a>
-                    <a href="<?php echo URLROOT; ?>/categorias/crear" class="btn">+ Nueva Categoría</a>
+                <div class="header-actions" style="display:flex; gap: 10px;">
+                    <a href="<?php echo URLROOT; ?>/categorias/inactivos" class="btn btn-danger btn-sm" style="display:flex; align-items:center; gap: 0.5rem;">🚫 Ver Deshabilitados</a>
+                    <a href="<?php echo URLROOT; ?>/categorias/crear" class="btn btn-primary">+ Nueva Categoría</a>
                 </div>
             </div>
 

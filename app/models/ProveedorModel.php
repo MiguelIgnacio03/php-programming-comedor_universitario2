@@ -60,4 +60,20 @@ class ProveedorModel extends Model {
         $stmt = $this->db->prepare("UPDATE proveedores SET estado = FALSE WHERE id = ?");
         return $stmt->execute([$id]);
     }
+
+    /**
+     * Get inactive suppliers (soft deleted)
+     */
+    public function getInactive() {
+        $stmt = $this->db->query("SELECT * FROM proveedores WHERE estado = FALSE ORDER BY nombre ASC");
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * Reactivate supplier
+     */
+    public function activate($id) {
+        $stmt = $this->db->prepare("UPDATE proveedores SET estado = TRUE WHERE id = ?");
+        return $stmt->execute([$id]);
+    }
 }

@@ -8,6 +8,13 @@ class Menus extends Controller {
 
     public function __construct() {
         AuthMiddleware::handle(); // Require login
+        
+        // Block inventory users from menus
+        if (isset($_SESSION['usuario_rol']) && $_SESSION['usuario_rol'] === 'inventario') {
+            header('Location: ' . URLROOT . '/dashboard');
+            exit;
+        }
+
         $this->menuModel = $this->model('MenuModel');
         $this->productoModel = $this->model('ProductoModel');
     }
@@ -59,6 +66,59 @@ class Menus extends Controller {
         ];
 
         $this->view('menus/crear', $data);
+    }
+
+    public function editar($id) {
+        $productos = $this->productoModel->getAllWithDetails();
+        $menu = $this->menuModel->getByIdWithProducts($id);
+
+        if (!$menu) {
+            header('Location: ' . URLROOT . '/menus');
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $menuData = [
+                'nombre' => trim($_POST['nombre']),
+                'dia_semana' => $_POST['dia_semana'],
+                'tipo' => $_POST['tipo'],
+                'descripcion' => trim($_POST['descripcion']),
+                'fecha' => $_POST['fecha']
+            ];
+
+            if ($this->menuModel->update($id, $menuData)) {
+                // Update products
+                $this->menuModel->clearProductos($id);
+
+                if (isset($_POST['productos']) && is_array($_POST['productos'])) {
+                    foreach ($_POST['productos'] as $productoId => $cantidad) {
+                        if ($cantidad > 0) {
+                            $this->menuModel->addProducto($id, $productoId, $cantidad);
+                        }
+                    }
+                }
+
+                header('Location: ' . URLROOT . '/menus');
+                exit;
+            }
+        }
+
+        // Map existing products for easy lookup in view
+        $menuProductos = [];
+        if (isset($menu['productos'])) {
+            foreach ($menu['productos'] as $prod) {
+                $menuProductos[$prod['producto_id']] = $prod['cantidad_necesaria'];
+            }
+        }
+
+        $data = [
+            'title' => 'Editar Menú',
+            'menu' => $menu,
+            'productos' => $productos,
+            'menuProductos' => $menuProductos
+        ];
+
+        $this->view('menus/editar', $data);
     }
 
     public function consumir($id) {

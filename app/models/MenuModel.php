@@ -8,7 +8,7 @@ class MenuModel extends Model {
     }
 
     /**
-     * Get all menus with product details
+     * Get all menus with product details (only active menus)
      */
     public function getAllWithDetails() {
         $sql = "SELECT m.*, 
@@ -16,6 +16,7 @@ class MenuModel extends Model {
                 FROM menus m
                 LEFT JOIN menu_productos mp ON m.id = mp.menu_id
                 LEFT JOIN productos p ON mp.producto_id = p.id
+                WHERE m.activo = TRUE
                 GROUP BY m.id
                 ORDER BY m.fecha DESC, m.dia_semana ASC";
         return $this->db->query($sql)->fetchAll();
@@ -62,6 +63,29 @@ class MenuModel extends Model {
     }
 
     /**
+     * Update menu
+     */
+    public function update($id, $data) {
+        $stmt = $this->db->prepare("UPDATE menus SET nombre = ?, dia_semana = ?, tipo = ?, descripcion = ?, fecha = ? WHERE id = ?");
+        return $stmt->execute([
+            $data['nombre'],
+            $data['dia_semana'],
+            $data['tipo'],
+            $data['descripcion'],
+            $data['fecha'],
+            $id
+        ]);
+    }
+
+    /**
+     * Clear products from menu (before re-adding)
+     */
+    public function clearProductos($menuId) {
+        $stmt = $this->db->prepare("DELETE FROM menu_productos WHERE menu_id = ?");
+        return $stmt->execute([$menuId]);
+    }
+
+    /**
      * Add product to menu
      */
     public function addProducto($menuId, $productoId, $cantidad) {
@@ -87,7 +111,7 @@ class MenuModel extends Model {
     }
 
     /**
-     * Consumir menu (uses FIFO logic)
+     * Consumir menu (uses FIFO logic with date validation)
      */
     public function consumirMenu($menuId, $usuarioId) {
         require_once APPROOT . '/app/models/ControlCaducidad.php';
@@ -98,6 +122,25 @@ class MenuModel extends Model {
             return ['success' => false, 'message' => 'Menú no encontrado'];
         }
 
+        // Date validation: menu can only be consumed on its scheduled date
+        $today = date('Y-m-d');
+        $menuDate = $menu['fecha'];
+
+        if ($today < $menuDate) {
+            return [
+                'success' => false,
+                'message' => "Este menú está programado para el {$menuDate}. No se puede consumir antes de la fecha programada."
+            ];
+        }
+
+        if ($today > $menuDate) {
+            return [
+                'success' => false,
+                'message' => "Este menú estaba programado para el {$menuDate}. La fecha ya ha pasado."
+            ];
+        }
+
+        // If we reach here, today == menuDate, proceed with consumption
         $resultados = [];
         $errores = [];
 
@@ -124,10 +167,21 @@ class MenuModel extends Model {
             ];
         }
 
+        // Mark menu as inactive (consumed) after successful consumption
+        $this->markAsConsumed($menuId);
+
         return [
             'success' => true,
-            'message' => 'Menú consumido exitosamente',
+            'message' => '✅ Menú consumido exitosamente. Los ingredientes han sido descontados del inventario.',
             'resultados' => $resultados
         ];
+    }
+
+    /**
+     * Mark menu as consumed (inactive)
+     */
+    private function markAsConsumed($menuId) {
+        $stmt = $this->db->prepare("UPDATE menus SET activo = FALSE WHERE id = ?");
+        return $stmt->execute([$menuId]);
     }
 }

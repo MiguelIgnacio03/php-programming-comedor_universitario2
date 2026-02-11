@@ -42,6 +42,12 @@ class Categorias extends Controller {
                 'dias_caducidad' => !empty($_POST['dias_caducidad']) ? $_POST['dias_caducidad'] : null
             ];
 
+            if (!empty($data['nombre']) && !preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/', $data['nombre'])) {
+                $data['error'] = 'El nombre de la categoría solo puede contener letras y espacios';
+                $this->view('categorias/crear', $data);
+                return;
+            }
+
             if ($this->categoriaModel->create($data)) {
                 header('Location: ' . URLROOT . '/categorias');
                 exit;
@@ -65,6 +71,13 @@ class Categorias extends Controller {
                 'perecedero' => isset($_POST['perecedero']) ? 1 : 0,
                 'dias_caducidad' => !empty($_POST['dias_caducidad']) ? $_POST['dias_caducidad'] : null
             ];
+
+            if (!empty($data['nombre']) && !preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/', $data['nombre'])) {
+                $data['error'] = 'El nombre de la categoría solo puede contener letras y espacios';
+                $data['categoria'] = $categoria; // Preserve category ID for the view
+                $this->view('categorias/editar', $data);
+                return;
+            }
 
             if ($this->categoriaModel->update($id, $data)) {
                 header('Location: ' . URLROOT . '/categorias');

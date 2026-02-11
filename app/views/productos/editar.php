@@ -20,11 +20,17 @@
             </div>
 
             <div class="card">
+                <?php if (!empty($data['error'])): ?>
+                    <div class="alert alert-danger" style="background: #f8d7da; color: #721c24; padding: 1rem; margin-bottom: 1rem; border-radius: 4px;">
+                        <?php echo $data['error']; ?>
+                    </div>
+                <?php endif; ?>
+
                 <form action="<?php echo URLROOT; ?>/productos/editar/<?php echo $data['producto']['id']; ?>" method="POST">
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="nombre">Nombre del Producto</label>
-                            <input type="text" id="nombre" name="nombre" value="<?php echo htmlspecialchars($data['producto']['nombre']); ?>" required>
+                            <input type="text" id="nombre" name="nombre" value="<?php echo htmlspecialchars($data['producto']['nombre']); ?>" required pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+" title="Solo se permiten letras y espacios">
                         </div>
 
                         <div class="form-group">

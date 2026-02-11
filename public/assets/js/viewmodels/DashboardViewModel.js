@@ -5,11 +5,13 @@
 class DashboardViewModel extends ViewModel {
     constructor() {
         super();
-        this.data = {
+        this.state = {
             stats: {
                 total_productos: 0,
                 stock_critico: 0,
-                lotes_vencen: 0
+                lotes_vencen: 0,
+                total_categorias: 0,
+                total_proveedores: 0
             },
             alerts: {
                 stock: [],

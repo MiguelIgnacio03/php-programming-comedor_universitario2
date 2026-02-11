@@ -6,8 +6,8 @@ class Reportes extends Controller {
     
     public function __construct() {
         AuthMiddleware::handle();
-        // Only admins can generate reports
-        if ($_SESSION['usuario_rol'] !== 'administrador') {
+        // Only admins and inventory users can generate reports
+        if (!isset($_SESSION['usuario_rol']) || !in_array($_SESSION['usuario_rol'], ['administrador', 'inventario'])) {
             header('Location: ' . URLROOT . '/dashboard');
             exit;
         }
